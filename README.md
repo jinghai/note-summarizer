@@ -22,7 +22,7 @@
 ### 方法1：使用 Skills CLI
 
 ```bash
-npx skills add <your-github-username>/agent-skills/note-summarizer
+npx skills add jinghai/agent-skills/note-summarizer
 ```
 
 ### 方法2：手动安装
