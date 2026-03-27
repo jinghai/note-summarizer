@@ -1,0 +1,77 @@
+# 笔记摘要技能 - 上下文记忆模块
+# 自动关联"整理笔记"指令和转发内容
+
+context_memory:
+  enabled: true
+  
+  # 时间窗口：5分钟内消息关联
+  window_minutes: 5
+  
+  # 最大关联消息数
+  max_messages: 3
+  
+  # 指令持久化配置
+  trigger_persistence:
+    duration_seconds: 300    # 指令有效5分钟
+    max_pending: 1           # 最多1个待处理指令
+    
+  # 触发词列表
+  triggers:
+    primary: ["整理笔记", "笔记摘要", "记笔记"]
+    secondary: ["保存笔记", "归档", "存一下", "总结一下"]
+    shortcuts: ["/note", "/save", "/summary"]
+
+# 内容识别规则
+content_detection:
+  # 链接特征
+  url_patterns:
+    - pattern: "toutiao\.com"
+      type: "今日头条"
+      extract: ["title", "author", "summary"]
+    - pattern: "mp\.weixin\.qq\.com"
+      type: "微信公众号"
+      extract: ["title", "author", "content"]
+    - pattern: "zhihu\.com"
+      type: "知乎"
+      extract: ["title", "author", "answer_summary"]
+    - pattern: "bilibili\.com|b23\.tv"
+      type: "B站"
+      extract: ["title", "up主", "description"]
+    - pattern: "youtube\.com|youtu\.be"
+      type: "YouTube"
+      extract: ["title", "channel", "description"]
+    - pattern: "x\.com|twitter\.com"
+      type: "X/Twitter"
+      extract: ["text", "author"]
+    - pattern: "douyin\.com|iesdouyin\.com"
+      type: "抖音"
+      extract: ["title", "author", "description"]
+    - pattern: "xiaohongshu\.com"
+      type: "小红书"
+      extract: ["title", "author", "content"]
+    - pattern: "weibo\.com"
+      type: "微博"
+      extract: ["text", "author"]
+      
+  # 内容类型判断
+  content_types:
+    video: ["视频", "video", "watch", "player"]
+    article: ["文章", "article", "post", "blog"]
+    image: ["图片", "image", "photo", "jpg", "png"]
+
+# 保存配置
+save_config:
+  vault: "default"
+  folder: "inbox"
+  filename_format: "{date}-{中文标题}.md"
+  # 中文标题生成规则：
+  # - 优先使用原文标题（简化）
+  # - 无标题时提取核心关键词（3-6个字）
+  # - 日期格式：YYYY-MM-DD
+  # 示例：2026-03-27-AI多智能体交易系统.md
+  
+# 标签库
+tag_library:
+  topics: [AI, 产品, 效率, 认知, 商业, 技术, 设计, 投资, 健康, 生活]
+  types: [方法论, 工具, 案例, 观点, 数据, 教程, 资源]
+  scenes: [工作, 学习, 生活, 投资, 健康, 娱乐]
