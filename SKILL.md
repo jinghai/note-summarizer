@@ -173,21 +173,34 @@ context_memory:
 
 ## Obsidian CLI 保存方法
 
-### 保存命令
+### ⚠️ 使用前必须确认 vault 路径
 ```bash
-obsidian create path="inbox/2026-03-27-标题.md" content="# 笔记内容..." silent
+obsidian vault info=path   # 先确认 vault 真实路径
+obsidian files             # 确认目标文件夹名称（大小写敏感）
 ```
 
-### 验证命令
+### 保存命令
 ```bash
-obsidian read path="inbox/2026-03-27-标题.md"
+obsidian create path="Inbox/2026-03-27-标题.md" content="---\ntitle: xxx\n..." silent
+```
+
+### 验证命令（必须执行）
+```bash
+obsidian files | grep "标题关键词"
 ```
 
 ### 完整工作流
-1. 生成 Markdown 内容
-2. 使用 `obsidian create` 保存到 inbox 目录
-3. 使用 `obsidian read` 验证保存成功
-4. 如失败，检查 vault 路径和权限
+1. 生成 Markdown 内容（以 YAML frontmatter 开头）
+2. 使用 `obsidian create path="Inbox/..."` 保存（注意大小写与 vault 一致）
+3. 使用 `obsidian files` 验证文件出现在列表中
+4. **禁止用 write 工具写 Obsidian 文件** — write 需要绝对路径，容易写错位置
+
+### ⚠️ 常见错误
+| 错误 | 原因 | 正确做法 |
+|------|------|---------|
+| 用 write 工具写文件 | 需要猜绝对路径，容易写错 vault | 用 `obsidian create` |
+| 保存后不验证 | 假设成功 | 必须用 `obsidian files` 验证 |
+| 路径大小写错误 | Obsidian 索引区分大小写 | 先用 `obsidian files` 确认文件夹名 |
 
 ## 回复格式
 
